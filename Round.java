@@ -13,6 +13,6 @@ public class Round {
         score = scanner.nextInt();
         courseRating = scanner.nextDouble();
         slopeRating = scanner.nextDouble();
-        scoreDifferential = ((score - courseRating) * 113 ) / slopeRating;
+        scoreDifferential = Math.round((((score - courseRating) * 113 ) / slopeRating) * 10.0) / 10.0;
     }
 }
