@@ -1,5 +1,6 @@
 package Handicaps;
 
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.LinkedList;
 
@@ -9,6 +10,7 @@ public class Handicap {
         Scanner scanner = new Scanner(System.in);
 
         LinkedList<Round> rounds = new LinkedList<>();
+
         boolean stay = true;
         while (stay) {
             System.out.println("Would you like to (1) Add a new round, (2) Check your handicap, or (3) Exit");
@@ -26,14 +28,15 @@ public class Handicap {
 
                 if (rounds.size() < 20) {
                     rounds.add(newest);
-                    System.out.println(rounds.size());
+                    updateHandicap(rounds);
                 }
                 else {
                     rounds.remove(0);
                     rounds.add(newest);
+                    updateHandicap(rounds);
                 }
             }
-            if (answer == 2){
+            if (answer == 2) {
 
             }
             if (answer == 3) {
@@ -42,16 +45,47 @@ public class Handicap {
         }
     }
 
-    public void updateHandicap(LinkedList<Round> totalRounds) {
-        double scoreDifTotal = 0;
+    public static double updateHandicap(LinkedList<Round> totalRounds) {
+        double scoreDifTotal = 0.0;
         double[] scoreDifs = new double[20];
         for (int i = 0; i < totalRounds.size(); i++) {
             scoreDifs[i] = totalRounds.get(i).scoreDifferential;
         }
 
-//        for (double element : scoreDifs) {
-//            System.out.println(element);
-//        }
+        sortArray(scoreDifs);
+
+        for (double vals : scoreDifs) {
+            System.out.print(vals + " ");
+        }
+
+        for (double value : scoreDifs) {
+            scoreDifTotal += value;
+        }
+
+        double handicap = scoreDifTotal / 8;
+
+        System.out.println(handicap);
+        return handicap;
+    }
+    public static double[] sortArray(double[] inputArray) {
+        if (inputArray.length >= 8 ) {
+            PriorityQueue<Double> PQ = new PriorityQueue<>(8);
+            for (double i : inputArray) {
+                PQ.add(i);
+                if (PQ.size() > 8) {
+                    PQ.poll();
+                }
+            }
+            double[] topEight = new double[8];
+            for (int j = 0; j < 8; j++) {
+                topEight[j] = PQ.poll();
+            }
+            for (double vals : topEight) {
+                System.out.print(vals + " ");
+            }
+            return topEight;
+        }
+        return inputArray;
     }
 
 }
